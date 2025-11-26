@@ -1,4 +1,4 @@
-from . import Graph
+from graph import Graph
 from graph.simple_graph import SimpleGraph
 
 def create_graph(graph_type: str) -> Graph:

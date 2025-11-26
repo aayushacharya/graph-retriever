@@ -1,4 +1,4 @@
-from . import Graph
+from graph import Graph
 from typing import List, Dict, Any, Tuple
 import numpy as np
 

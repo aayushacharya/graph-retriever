@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List, Dict, Any
-from . import Dataset
+from dataset import Dataset
 
 
 class SyntheticDataset(Dataset):

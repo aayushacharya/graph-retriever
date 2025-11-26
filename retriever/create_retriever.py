@@ -1,5 +1,5 @@
 
-from . import Retriever
+from retriever import Retriever
 from retriever.cosine_retriever import CosineRetriever
 
 def create_retriever(retriever_type: str) -> Retriever:
