@@ -8,20 +8,16 @@ class Retriever(ABC):
     """Abstract base class for retriever models"""
     
     @abstractmethod
-    def initialize(self, graph: Graph) -> None:
-        """Initialize the retriever with a graph"""
-        pass
-    
-    @abstractmethod
-    def retrieve(self, query: np.ndarray, k: int = 10) -> List[Tuple[str, float]]:
+    def retrieve(self, query: str, graph: Graph) -> List[Any]:
         """Retrieve top-k nodes for a given query
         
         Returns:
             List of (node_id, score) tuples
         """
         pass
-    
+
     @abstractmethod
-    def train(self, training_data: List[Tuple[np.ndarray, str]]) -> None:
-        """Train the retriever model"""
+    def __str__(self) -> str:
+        """Return the name of the retriever model"""
         pass
+    

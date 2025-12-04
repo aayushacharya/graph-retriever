@@ -1,11 +1,11 @@
 
 from retriever import Retriever
-from retriever.cosine_retriever import CosineRetriever
+from retriever.gemini_baseline_retriever import GeminiBaselineRetriever
 
 def create_retriever(retriever_type: str) -> Retriever:
     """Factory function to create retriever instances"""
     retrievers = {
-        'cosine': CosineRetriever
+        'gemini_baseline_retriever': GeminiBaselineRetriever
     }
     
     if retriever_type not in retrievers:
