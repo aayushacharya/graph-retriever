@@ -7,6 +7,7 @@ A flexible and extensible graph-based retrieval system built with Python's Abstr
 ### Prerequisites
 
 - Python 3.13+
+- Virtuoso server and Freebase setup according to [GrailQA](https://github.com/dki-lab/GrailQA/tree/main).
 
 ### Installation
 
@@ -39,11 +40,10 @@ python run.py --graph <graph_type> --retriever <retriever_type> --dataset <datas
 
 **Available Options:**
 
-- `--graph`: Graph implementation (`simple`)
-- `--retriever`: Retrieval model (`cosine`)
+- `--graph`: Graph implementation (`freebase`)
+- `--retriever`: Retrieval model (`gemini_baseline_retriever`)
 - `--dataset`: Dataset to use (`synthetic`)
 - `--experiment`: Experiment type (`standard`)
-- `--k`: Number of results to retrieve (default: 10)
 
 #### Example Commands
 
@@ -64,23 +64,34 @@ We welcome contributions! This project is designed to be easily extensible throu
 ```
 graph-retriever/
 ├── run.py                      # Main entry point
-├── dataset/
+├── test_grailqa.py             # Test script for GrailQA
+├── sample_dataset.json         # Sample dataset file
+├── requirements.txt            # Python dependencies
+├── README.md                   # Project documentation
+├── .gitignore                  # Git ignore rules
+├── .env.example                # Environment variables example
+├── .env                        # Environment variables (local)
+├── data/                       # Data directory
+├── dataset/                    # Dataset module
 │   ├── __init__.py             # Dataset abstract base class
 │   ├── create_dataset.py       # Dataset factory function
 │   └── custom_dataset.py       # Custom dataset implementation
-├── experiment/
+├── db/                         # Database directory
+├── experiment/                 # Experiment module
 │   ├── __init__.py             # Experiment abstract base class
 │   ├── create_experiment.py    # Experiment factory function
 │   └── custom_experiment.py    # Custom experiment implementation
-├── graph/
+├── graph/                      # Graph module
 │   ├── __init__.py             # Graph abstract base class
 │   ├── create_graph.py         # Graph factory function
 │   └── custom_graph.py         # Custom graph implementation
-├── retriever/
+├── ontology/                   # Ontology directory
+├── output/                     # Output directory
+├── retriever/                  # Retriever module
 │   ├── __init__.py             # Retriever abstract base class
-│   └── create_retriever.py     # Retriever factory function
-├── .gitignore
-└── README.md
+│   ├── create_retriever.py     # Retriever factory function
+│   └── custom_retriever.py     # Custom retriever implementation
+└── utils/                      # Utils directory
 ```
 
 ### How to Contribute
@@ -89,21 +100,20 @@ If you want to add a new `Dataset`, `Experiment`, `Graph`, or a new `Retriever`.
 
 ```python
 class MyCustomExperiment(Experiment):
-    def __init__(self):
-        # Initialize experiment parameters
+    """Custom experiment implementation"""
+    
+    @abstractmethod
+    def run(self,graph: Graph, retriever: Retriever, dataset: Dataset) -> Dict[str, float]:
+        """Evaluate predictions against ground truth"""
         pass
 
-    def setup(self, graph: Graph, retriever: Retriever, dataset: Dataset) -> None:
-        # Setup experiment components
+    @abstractmethod
+    def dump_results(self, results: Result, output_path: str) -> None:
+        """Dump experiment results to a file"""
         pass
 
-    def run(self) -> Dict[str, float]:
-        # Run experiment and return metrics
-        pass
-
-    def evaluate(self, predictions: List[List[str]],
-                 ground_truth: Dict[int, List[str]]) -> Dict[str, float]:
-        # Evaluate predictions and return metrics
+    @abstractmethod
+    def __str__(self) -> str:
         pass
 ```
 
