@@ -1,6 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any
 import numpy as np
+from pydantic import BaseModel, Field
+
+
+class QAFormat(BaseModel):
+    """Data model for a single question in the dataset"""
+    question_id: str = Field(description="Unique identifier for the question")
+    question_text: str = Field(description="Text of the question")
+    answers: List[str] = Field(description="List of correct answers")
+    metadata: Dict[str, Any] = Field(description="Additional metadata for the question")
 
 class Dataset(ABC):
     """Abstract base class for dataset implementations"""
@@ -9,20 +18,25 @@ class Dataset(ABC):
     def load(self) -> None:
         """Load the dataset"""
         pass
-    
+
     @abstractmethod
-    def get_graph_data(self) -> Any:
-        """Get data for graph construction"""
+    def get_train_data(self) -> List[QAFormat]:
+        """Get training data"""
         pass
-    
+
     @abstractmethod
-    def get_queries(self) -> List[np.ndarray]:
-        """Get query data for retrieval"""
+    def get_dev_data(self) -> List[QAFormat]:
+        """Get development data"""
         pass
-    
+
     @abstractmethod
-    def get_ground_truth(self) -> Dict[int, List[str]]:
-        """Get ground truth for evaluation"""
+    def get_test_data(self) -> List[QAFormat]:
+        """Get test data"""
         pass
+
+    @abstractmethod
+    def __str__(self) -> str:
+        pass
+
 
 

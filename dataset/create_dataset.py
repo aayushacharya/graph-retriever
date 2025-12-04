@@ -1,10 +1,12 @@
 from dataset import Dataset
 from dataset.synthetic_dataset import SyntheticDataset
+from dataset.grailqa_dataset import GrailQADataset
 
 def create_dataset(dataset_type: str) -> Dataset:
     """Factory function to create dataset instances"""
     datasets = {
         'synthetic': SyntheticDataset,
+        'grailqa': GrailQADataset,
     }
     
     if dataset_type not in datasets:
