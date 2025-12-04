@@ -1,1 +1,5 @@
-numpy==2.3.5
+pyparsing==3.2.5
+rdflib==7.5.0
+setuptools==80.9.0
+SPARQLWrapper==2.0.0
+wheel==0.45.1
