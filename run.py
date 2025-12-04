@@ -11,14 +11,16 @@ from dataset import Dataset
 from dataset.create_dataset import create_dataset
 from experiment import Experiment
 from experiment.create_experiment import create_experiment
+from dotenv import load_dotenv
+load_dotenv()
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Graph Retriever Experiments')
-    parser.add_argument('--graph', type=str, default='simple',
-                        choices=['simple'],
+    parser.add_argument('--graph', type=str, default='freebase',
+                        choices=['freebase'],
                         help='Graph type to use')
-    parser.add_argument('--retriever', type=str, default='cosine',
-                        choices=['cosine'],
+    parser.add_argument('--retriever', type=str, default='gemini_baseline_retriever',
+                        choices=['gemini_baseline_retriever'],
                         help='Retriever model to use')
     parser.add_argument('--dataset', type=str, default='synthetic',
                         choices=['synthetic'],
@@ -26,8 +28,6 @@ def parse_args():
     parser.add_argument('--experiment', type=str, default='standard',
                         choices=['standard'],
                         help='Experiment type to run')
-    parser.add_argument('--k', type=int, default=10,
-                        help='Number of results to retrieve')
     
     args = parser.parse_args()
     return args
@@ -42,9 +42,7 @@ def main():
     dataset: Dataset = create_dataset(args.dataset)
     experiment: Experiment = create_experiment(args.experiment)
     
-    experiment.setup(graph, retriever, dataset)
-    
-    metrics = experiment.run()
+    metrics = experiment.run(graph, retriever, dataset)
     print("Experiment Metrics:")
     for metric, value in metrics.items():
         print(f"{metric}: {value:.4f}")
