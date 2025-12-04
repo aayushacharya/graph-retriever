@@ -1,45 +1,52 @@
-import numpy as np
+from dataset import Dataset, QAFormat
 from typing import List, Dict, Any
-from dataset import Dataset
-
+import numpy as np
+import os
+import json
 
 class SyntheticDataset(Dataset):
-    """Synthetic dataset for testing"""
-    
-    def __init__(self, num_nodes: int = 100, feature_dim: int = 64, num_queries: int = 20):
-        self.num_nodes = num_nodes
-        self.feature_dim = feature_dim
-        self.num_queries = num_queries
-        self.data = None
-        self.queries = None
-        self.ground_truth = None
+    """Abstract base class for dataset implementations"""
+
+    def __init__(self):
+        self.name="SyntheticDataset"
+        self.load()    
     
     def load(self) -> None:
-        # Generate random node features
-        nodes = {}
-        for i in range(self.num_nodes):
-            features = np.random.randn(self.feature_dim)
-            features /= np.linalg.norm(features)
-            nodes[f"node_{i}"] = features
-        
-        self.data = {'nodes': nodes, 'edges': []}
-        
-        # Generate queries (similar to some nodes)
-        self.queries = []
-        self.ground_truth = {}
-        for i in range(self.num_queries):
-            # Pick a random node and add noise
-            base_node = np.random.randint(0, self.num_nodes)
-            query = nodes[f"node_{base_node}"] + np.random.randn(self.feature_dim) * 0.1
-            query /= np.linalg.norm(query)
-            self.queries.append(query)
-            self.ground_truth[i] = [f"node_{base_node}"]
+        """Load the dataset"""
+        with open('sample_dataset.json', 'r') as f:
+            sample_dataset = json.load(f)
+        self.train=sample_dataset
+        self.dev=sample_dataset
+        self.test=sample_dataset
+
+    def _convert_to_qaformat(self, data: List[Dict[str, Any]]) -> List[QAFormat]:
+        qa_data = []
+        for item in data:
+            answers_grailqa=item.get("answer", [])
+            answers=[]
+            for ans in answers_grailqa:
+                answers.append(ans.get("answer_argument", ""))
+            
+            qa_item = QAFormat(
+                question_id=str(item.get("qid", "")),
+                question_text=item.get("question", ""),
+                answers=answers,
+                metadata=item.copy()
+            )
+            qa_data.append(qa_item)
+        return qa_data
+
+    def get_train_data(self) -> List[QAFormat]:
+        return self._convert_to_qaformat(self.train)
     
-    def get_graph_data(self) -> Any:
-        return self.data
+    def get_dev_data(self) -> List[QAFormat]:
+        return self._convert_to_qaformat(self.dev)
     
-    def get_queries(self) -> List[np.ndarray]:
-        return self.queries
+    def get_test_data(self) -> List[QAFormat]:
+        return self._convert_to_qaformat(self.test)
     
-    def get_ground_truth(self) -> Dict[int, List[str]]:
-        return self.ground_truth
+    def __str__(self) -> str:
+        return self.name
+
+
+    

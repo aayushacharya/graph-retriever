@@ -1,0 +1,67 @@
+[
+    {
+        "qid": 3202959008000,
+        "question": "what is the role of opera designer gig who designed the telephone / the medium?",
+        "answer": [
+            {
+                "answer_type": "Entity",
+                "answer_argument": "m.0b787yg",
+                "entity_name": "Set Designer"
+            }
+        ],
+        "function": "none",
+        "num_node": 3,
+        "num_edge": 2,
+        "graph_query": {
+            "nodes": [
+                {
+                    "nid": 0,
+                    "node_type": "class",
+                    "id": "opera.opera_designer_role",
+                    "class": "opera.opera_designer_role",
+                    "friendly_name": "Opera Designer Role",
+                    "question_node": 1,
+                    "function": "none"
+                },
+                {
+                    "nid": 1,
+                    "node_type": "class",
+                    "id": "opera.opera_designer_gig",
+                    "class": "opera.opera_designer_gig",
+                    "friendly_name": "Opera Designer Gig",
+                    "question_node": 0,
+                    "function": "none"
+                },
+                {
+                    "nid": 2,
+                    "node_type": "entity",
+                    "id": "m.0pm2fgf",
+                    "class": "opera.opera_production",
+                    "friendly_name": "The Telephone / The Medium",
+                    "question_node": 0,
+                    "function": "none"
+                }
+            ],
+            "edges": [
+                {
+                    "start": 1,
+                    "end": 0,
+                    "relation": "opera.opera_designer_gig.design_role",
+                    "friendly_name": "Design Role"
+                },
+                {
+                    "start": 2,
+                    "end": 1,
+                    "relation": "opera.opera_production.designers",
+                    "friendly_name": "Designers"
+                }
+            ]
+        },
+        "sparql_query": "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX : <http://rdf.freebase.com/ns/> \nSELECT (?x0 AS ?value) WHERE {\nSELECT DISTINCT ?x0  WHERE { \n?x0 :type.object.type :opera.opera_designer_role . \n?x1 :type.object.type :opera.opera_designer_gig . \nVALUES ?x2 { :m.0pm2fgf } \n?x1 :opera.opera_designer_gig.design_role ?x0 . \n?x2 :opera.opera_production.designers ?x1 . \nFILTER ( ?x0 != ?x1 && ?x0 != ?x2 && ?x1 != ?x2  )\n}\n}",
+        "domains": [
+            "opera"
+        ],
+        "level": "i.i.d.",
+        "s_expression": "(AND opera.opera_designer_role (JOIN (R opera.opera_designer_gig.design_role) (JOIN (R opera.opera_production.designers) m.0pm2fgf)))"
+    }
+]
