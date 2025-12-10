@@ -35,7 +35,7 @@ This will run a cosine similarity retriever on a simple graph with synthetic dat
 #### Command Line Options
 
 ```bash
-python run.py --graph <graph_type> --retriever <retriever_type> --dataset <dataset_type> --k <num_results>
+python run.py --graph <graph_type> --retriever <retriever_type> --dataset <dataset_type>
 ```
 
 **Available Options:**
