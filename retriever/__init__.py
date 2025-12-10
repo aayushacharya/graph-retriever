@@ -9,7 +9,7 @@ class Retriever(ABC):
     
     @abstractmethod
     def retrieve(self, query: str, graph: Graph) -> List[Any]:
-        """Retrieve top-k nodes for a given query
+        """Retrieve answer for a given query
         
         Returns:
             List of (node_id, score) tuples
