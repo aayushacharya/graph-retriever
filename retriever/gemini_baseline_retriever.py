@@ -2,7 +2,7 @@ from retriever import Retriever
 from typing import List, Dict, Any, Tuple
 from graph import Graph
 import numpy as np
-from utils.gemini.helpers import load_gemini_model, generate_text
+from utils.gemini.helpers import load_gemini_client, generate_text
 
 
 class GeminiBaselineRetriever(Retriever):
@@ -10,7 +10,7 @@ class GeminiBaselineRetriever(Retriever):
 
     def __init__(self, model_name: str = "gemini-2.5-pro"):
         self.name="GeminiBaselineRetriever"
-        self.client=load_gemini_model(model_name)
+        self.client=load_gemini_client()
     
     def retrieve(self, query: str,graph: Graph) -> List[Any]:
         """Retrieve content based on the query using Gemini model

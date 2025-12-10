@@ -1,7 +1,7 @@
 from google.genai import Client, types
 
 
-def load_gemini_model(model_name: str) -> Client:
+def load_gemini_client() -> Client:
     """Load a Gemini model from Google GenAI API
     
     Args:
